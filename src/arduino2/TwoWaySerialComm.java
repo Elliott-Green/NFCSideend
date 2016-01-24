@@ -3,10 +3,12 @@ import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 
-import java.io.FileDescriptor;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import Security.Normal;
 
 public class TwoWaySerialComm
 {
@@ -73,7 +75,7 @@ public class TwoWaySerialComm
 				}
 
 			}
-			catch ( IOException | InterruptedException e )
+			catch ( Exception e )
 			{
 				e.printStackTrace();
 			}   
@@ -84,18 +86,18 @@ public class TwoWaySerialComm
 		 * very very dirty read, no idea how i got this working. but i did :)
 		 * reads over and over, untill 8 in length and ends with DC, else set to null and re-read till works LOL
 		 */
-		private void testString(String a) 
+		private void testString(String a) throws Exception 
 		{
 
-			if(a.endsWith("3D"))
+			if(a.endsWith("3D") ||a.endsWith("DA"))
 			{
 				System.out.println("testing sending to the database := "+ a);
-
+				Normal n = new Normal();
+				n.noSecurityCheck(a);
 			}
-			if(a.endsWith("DA"))
+			else
 			{
-				System.out.println("This is my Unicard!!! :) := "+ a);
-
+				System.out.println("Card not known...");
 			}
 
 		}

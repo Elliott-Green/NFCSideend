@@ -1,12 +1,18 @@
 package Main;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
 import arduino2.TwoWaySerialComm;
-import arduino2.TwoWaySerialComm.SerialReader;
+import database.repository.NFCRepository;
+import database.types.User;
+
+
 
 
 public class Main {
 
-	public static void main(String[] args) 
+	public static void main(String[] args) throws Exception 
 	{
 		
 	
@@ -19,6 +25,10 @@ public class Main {
         {
             e.printStackTrace();
         }
+		
+		
+		
+		
 	}
 }
 

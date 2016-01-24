@@ -7,9 +7,5 @@ public class IDReader {
 		return ID;
 	}
 	
-	public boolean isValid(String ID)
-	{
-		
-	}
 
 }

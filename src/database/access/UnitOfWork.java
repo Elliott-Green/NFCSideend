@@ -11,36 +11,40 @@ import java.sql.SQLException;
 public class UnitOfWork implements IUnitOfWork {
 
 	private final Connection _conn;
-	
+
 	public UnitOfWork(Connection conn){
 		_conn = conn;
 	}
 
 	@Override
-	public ResultSet RunStatement(String sql) throws SQLException {
-	
-		if(_conn.isClosed()){
+	public ResultSet RunStatement(String sql) throws SQLException 
+	{
+		if(_conn.isClosed())
+		{
 			throw new SQLException("Connection was already closed");
 		}
-		
-		try{
+
+		try
+		{
 			ResultSet rs = null;
 			
 			PreparedStatement statement = _conn.prepareStatement(sql);
-			
 			rs = statement.executeQuery();
+			
 			return rs;
 		}
-		catch(SQLException ex){
+		catch(SQLException ex)
+		{
 			ex.printStackTrace();
 			throw ex;
 		}
-			}
+	}
 
-	
+
 
 	@Override
-	public void Done() throws SQLException {		
+	public void Done() throws SQLException 
+	{		
 		_conn.close();
 		System.out.println("Connection closed");
 	}	
