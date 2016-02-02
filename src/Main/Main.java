@@ -1,11 +1,12 @@
 package Main;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import arduino2.TwoWaySerialComm;
+import database.access.DBFactory;
 import database.repository.NFCRepository;
 import database.types.User;
+
 
 
 
@@ -28,6 +29,8 @@ public class Main {
 		
 		
 		
+		NFCRepository db = new NFCRepository("jdbc:mysql://51.255.42.59:3306/NFC" , "jroot"  , "javapassword");
+
 		
 	}
 }

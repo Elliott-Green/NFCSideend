@@ -6,13 +6,19 @@ public class User {
 	private final String _username;
 	private final String _password;
 	private final String _key;
+	private final String _salt;
+	private final String _hash;
 	private final String _role;
 	
-	public User(int userID, String username, String password, String key, String role){
+	public User(int userID, String username, String password, String key, String salt,
+				String hash, String role)
+	{
 		_userID = userID;
 		_username = username;
 		_password = password;
 		_key = key;	
+		_salt = salt;
+		_hash = hash;
 		_role = role;
 	}
 
@@ -31,10 +37,19 @@ public class User {
 	public String get_key() {
 		return _key;
 	}
+	
+	public String get_salt() {
+		return _salt;
+	}
+	
+	public String get_hash() {
+		return _hash;
+	}
 
 	public String get_role() {
 		return _role;
 	}
+	
 	
 
 		

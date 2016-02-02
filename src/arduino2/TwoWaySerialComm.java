@@ -8,10 +8,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import Security.Encry;
 import Security.Normal;
+
 
 public class TwoWaySerialComm
 {
+	
 	public TwoWaySerialComm()
 	{
 		super();
@@ -37,7 +40,7 @@ public class TwoWaySerialComm
 				OutputStream out = serialPort.getOutputStream();
 
 				(new Thread(new SerialReader(in))).start();
-				(new Thread(new SerialWriter(out))).start();
+			//(new Thread(new SerialWriter(out))).start();
 
 			}
 			else
@@ -47,12 +50,15 @@ public class TwoWaySerialComm
 		}     
 	}
 
-	/** */
-	public static class SerialReader implements Runnable 
+	/*
+	 * 
+	 */
+	public class SerialReader implements Runnable 
 	{
-		InputStream in;
-
-		public SerialReader ( InputStream in )
+	
+		
+		private final InputStream in;
+        public SerialReader (InputStream in)
 		{
 			this.in = in;
 		}
@@ -61,19 +67,30 @@ public class TwoWaySerialComm
 		{
 			byte[] buffer = new byte[8];
 			int len = 0;
-			String a = null;
+			String key = null;
 			try
 			{
-				while ( ( len = this.in.read(buffer)) > -1 )
-				{
-					// System.out.print(new String(buffer,0,len));
-					Thread.sleep(1000);
-					a = new String(buffer,0,len);
-					testString(a);
-					a=null;
-					Thread.sleep(1000);
-				}
+				StringBuilder sb = new StringBuilder();
+				boolean hasData =false;
 
+				while ( ( len = this.in.read(buffer)) > -1 )
+				{											
+					if(len != 0){
+						hasData = true;
+						String val = new String(buffer,0,len);		
+						sb.append(val);
+					}else{
+						
+						if( hasData)
+						{	key = sb.toString();
+							sb = new StringBuilder();
+							Encry e = new Encry();
+							Encry.chkKeyHash(key);
+						}
+						hasData = false;
+						
+						}
+				}
 			}
 			catch ( Exception e )
 			{
@@ -82,52 +99,6 @@ public class TwoWaySerialComm
 
 		}
 
-		/*
-		 * very very dirty read, no idea how i got this working. but i did :)
-		 * reads over and over, untill 8 in length and ends with DC, else set to null and re-read till works LOL
-		 */
-		private void testString(String a) throws Exception 
-		{
 
-			if(a.endsWith("3D") ||a.endsWith("DA"))
-			{
-				System.out.println("testing sending to the database := "+ a);
-				Normal n = new Normal();
-				n.noSecurityCheck(a);
-			}
-			else
-			{
-				System.out.println("Card not known...");
-			}
-
-		}
-	
-}
-
-/** */
-public static class SerialWriter implements Runnable 
-{
-	OutputStream out;
-
-	public SerialWriter ( OutputStream out )
-	{
-		this.out = out;
 	}
-
-	public void run ()
-	{
-		try
-		{                
-			int c = 0;
-			while ( ( c = System.in.read()) > -1 )
-			{
-				this.out.write(c);
-			}                
-		}
-		catch ( IOException e )
-		{
-			e.printStackTrace();
-		}            
-	}
-}
 }
