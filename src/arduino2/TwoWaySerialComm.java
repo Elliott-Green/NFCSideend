@@ -14,6 +14,7 @@ import Security.Normal;
 
 public class TwoWaySerialComm
 {
+	public static OutputStream output;
 	
 	public TwoWaySerialComm()
 	{
@@ -40,7 +41,7 @@ public class TwoWaySerialComm
 				OutputStream out = serialPort.getOutputStream();
 
 				(new Thread(new SerialReader(in))).start();
-			//(new Thread(new SerialWriter(out))).start();
+				(new Thread(new SerialWriter(out))).start();
 
 			}
 			else
@@ -50,22 +51,26 @@ public class TwoWaySerialComm
 		}     
 	}
 
+
+
+
+
 	/*
 	 * 
 	 */
 	public class SerialReader implements Runnable 
 	{
-	
-		
+
+
 		private final InputStream in;
-        public SerialReader (InputStream in)
+		public SerialReader (InputStream in)
 		{
 			this.in = in;
 		}
 
 		public void run ()
 		{
-			byte[] buffer = new byte[8];
+			byte[] buffer = new byte[7];
 			int len = 0;
 			String key = null;
 			try
@@ -74,22 +79,27 @@ public class TwoWaySerialComm
 				boolean hasData =false;
 
 				while ( ( len = this.in.read(buffer)) > -1 )
-				{											
-					if(len != 0){
+				{			
+					//read the whole string.
+					if(len != 0)
+					{
 						hasData = true;
 						String val = new String(buffer,0,len);		
 						sb.append(val);
-					}else{
-						
+					}
+					else
+					{
+						//when finished reading, check authentication
 						if( hasData)
-						{	key = sb.toString();
+						{
+							key = sb.toString();
 							sb = new StringBuilder();
 							Encry e = new Encry();
 							Encry.chkKeyHash(key);
 						}
 						hasData = false;
-						
-						}
+
+					}
 				}
 			}
 			catch ( Exception e )
@@ -99,6 +109,50 @@ public class TwoWaySerialComm
 
 		}
 
+	}
 
+	public static class SerialWriter implements Runnable 
+	{
+		OutputStream out;
+
+		public SerialWriter ( OutputStream out )
+		{
+			this.out = out;
+		}
+
+		public void run ()
+		{
+			try
+			{                
+				int c = 3;
+
+				while ( ( c = System.in.read()) > -1 )
+				{
+					this.out.write(c);
+				}   
+
+			}
+			catch ( IOException e )
+			{
+				e.printStackTrace();
+				System.exit(-1);
+			}  
+
+		}
+	}
+
+	public static synchronized void writeData(String data) 
+	{
+		System.out.println("Senting: " + data);
+		try 
+		{
+			Thread a = new Thread(SerialWriter(output));
+			output.write(data.getBytes());
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			System.out.println("could not write to port");
+		}
 	}
 }

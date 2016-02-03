@@ -26,11 +26,13 @@ public class Encry
 	public static void chkKeyHash(String key) throws Exception
 	{
 		//is valid user
-		
 		boolean a = dbRepo.isValidKey(key);
 		if (a == true) 
 		{
+			//get user obj, when they scan
 			User u = dbRepo.GetMatchingUser(key);
+			
+			
 			String salt = u.get_salt();
 			//debug System.out.println("users salt = " + salt);
 			String hash = stringToSHA2(key, salt);
@@ -39,8 +41,11 @@ public class Encry
 			
 			if(hash.equals(DBhash))
 			{
-				System.out.println("Bingo baby");
+				System.out.println("SHA256 encryption working.");
 			}
+			
+			dbRepo.checkPermission(u);
+			
 		}
 		
 		
@@ -56,8 +61,7 @@ public class Encry
 	{
 		String hashedKey = null;
 		String concatKeySalt = key+salt;
-		//debug 
-		System.out.println("users concat string = " + concatKeySalt);
+		//debug System.out.println("users concat string = " + concatKeySalt);
 		
 		 try 
 		 {

@@ -5,9 +5,11 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 
+import Security.Logic;
 import database.access.DBFactory;
 import database.access.IUnitOfWork;
 import database.types.Door;
+import database.types.Section;
 import database.types.User;
 
 
@@ -77,6 +79,8 @@ public class NFCRepository implements INFCRepository{
 			ResultSet rs =  uow.RunStatement("SELECT * FROM USERS where _key LIKE \"%"+ key +"%\"");
 			ArrayList<User> users = mapUsers(rs);
 
+			
+			//get the first and hopefully only record
 			if(key.equals(users.get(0).get_key()))
 			{
 				System.out.println("Welcome " + users.get(0).get_username() +" "+ users.get(0).get_password());
@@ -99,49 +103,7 @@ public class NFCRepository implements INFCRepository{
 	}
 
 
-	/*
-	 * Maps users into an Arraylist from the ResultSet.
-	 * @Calls mapSingleUser
-	 */
-	private ArrayList<User> mapUsers(ResultSet rs) throws SQLException 
-	{
-		ArrayList<User> results = new ArrayList<User>();
-
-		while(rs.next())
-		{
-			results.add(mapSingleUser(rs));
-		}
-
-		return results;
-	}
-
-	private User mapSingleUser(ResultSet rs) throws SQLException
-	{
-		
-		Integer id = rs.getInt("_userID");
-		String un =rs.getString("_username");
-		String pw =rs.getString("_password");
-		String key =rs.getString("_key");
-		String salt = rs.getString("_salt");
-		String hash = rs.getString("_hash");
-		String role =rs.getString("_roleID");
-		return new User(id,un,pw, key,salt,hash, role);
-	}
 	
-	
-	private Door mapDoors(ResultSet rs) throws SQLException
-	{
-		if(rs.next()){
-			int id = rs.getInt("_doorID");
-			String name =rs.getString("_doorName");
-			Time tin =rs.getTime("_doorTimeIn");
-			Time tout =rs.getTime("_doorTimeOut");
-			int bid =rs.getInt("_buildingID");
-			return new Door(id,name,tin,tout,bid);
-		}
-		return null;
-
-	}
 	
 	
 
@@ -210,6 +172,148 @@ public class NFCRepository implements INFCRepository{
 			e.printStackTrace();
 		}
 			
+	}
+	
+	public void checkPermission(User u)
+	{
+		/*
+		 * attempting factory pattern
+		 */
+		int roleID = u.get_role();
+		switch(roleID)
+		{
+		case 1: Logic.seniorStaffPermission(); break;
+		case 2: Logic.juniorStaffPermission(); break;
+		case 3: Logic.studentPermission(); break;
+		case 4: Logic.dayStaffPermission(); break;
+		case 5: Logic.nightStaffPermission(); break;
+			
+		}
+	}
+	
+	
+	
+	public boolean isValidDoorID(int doorID) 
+	{
+		try
+		{
+			IUnitOfWork uow = _dbFactory.CreateUnitOfWork();
+			ResultSet rs =  uow.RunStatement("SELECT * FROM DOOR WHERE _doorID = " + doorID);
+			Door Doors = mapDoors(rs);
+			
+			/*
+			 * WRITE LOGIC TO SEE IF THERE IS NOT A DOOR, IF NOT THEN QUIT.
+			 */
+		
+		} 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+		
+	}
+	
+	
+
+	
+	
+	
+	
+	
+	
+	/////////////////////////////////////////////////////////////////////
+	//mappings
+	/////////////////////////////////////////////////////////////////////
+	
+	/*
+	 * Maps users into an Arraylist from the ResultSet.
+	 * @Calls mapSingleUser
+	 */
+	private ArrayList<User> mapUsers(ResultSet rs) throws SQLException 
+	{
+		ArrayList<User> results = new ArrayList<User>();
+
+		while(rs.next())
+		{
+			results.add(mapUser(rs));
+		}
+
+		return results;
+	}
+
+	private User mapUser(ResultSet rs) throws SQLException
+	{
+		
+		Integer id = rs.getInt("_userID");
+		String un =rs.getString("_username");
+		String pw =rs.getString("_password");
+		String key =rs.getString("_key");
+		String salt = rs.getString("_salt");
+		String hash = rs.getString("_hash");
+		int role =rs.getInt("_roleID");
+		return new User(id,un,pw, key,salt,hash, role);
+	}
+	
+	
+	
+	///////////////////////////////////////////////////////////////////////
+	
+	/*
+	 * Maps users into an Arraylist from the ResultSet.
+	 * @Calls mapSingleUser
+	 */
+	private ArrayList<Door> mapDoor(ResultSet rs) throws SQLException 
+	{
+		ArrayList<Door> results = new ArrayList<Door>();
+
+		while(rs.next())
+		{
+			results.add(mapDoors(rs));
+		}
+
+		return results;
+	}
+	private Door mapDoors(ResultSet rs) throws SQLException
+	{
+		if(rs.next())
+		{
+			int id = rs.getInt("_doorID");
+			String name =rs.getString("_doorName");
+			Time tin =rs.getTime("_doorTimeIn");
+			Time tout =rs.getTime("_doorTimeOut");
+			int bid =rs.getInt("_buildingID");
+			return new Door(id,name,tin,tout,bid);
+		}
+		return null;
+
+	}
+
+///////////////////////////////////////////////////////////////////////
+	private ArrayList<Section> mapSection(ResultSet rs) throws SQLException 
+	{
+		ArrayList<Section> results = new ArrayList<Section>();
+
+		while(rs.next())
+		{
+			results.add(mapSections(rs));
+		}
+
+		return results;
+	}
+	private Section mapSections(ResultSet rs) throws SQLException
+	{
+		if(rs.next())
+		{
+			
+			int sectionID = rs.getInt("_sectionID");
+			int roleID = rs.getInt("_roleID");
+			int doorID = rs.getInt("_doorID");
+	
+			return new Section(sectionID,roleID,doorID);
+		}
+		return null;
+
 	}
 
 

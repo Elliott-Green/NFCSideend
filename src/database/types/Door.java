@@ -4,6 +4,7 @@ import java.sql.Time;
 
 public class Door 
 {
+	static int door;
 	private final int _doorID;
 	private final String _doorName;
 	private final Time _doorTimeIn;
@@ -42,6 +43,17 @@ public class Door
 
 	public Time get_doorTimeOut() {
 		return _doorTimeOut;
+	}
+
+
+	public static void setCurrentDoor(int doorID) 
+	{
+		 door = doorID;
+	}
+	
+	public static int getCurrentDoor() 
+	{
+		return door;
 	}
 	
 	

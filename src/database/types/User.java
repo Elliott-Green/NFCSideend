@@ -8,10 +8,10 @@ public class User {
 	private final String _key;
 	private final String _salt;
 	private final String _hash;
-	private final String _role;
+	private final int _role;
 	
 	public User(int userID, String username, String password, String key, String salt,
-				String hash, String role)
+				String hash, int role)
 	{
 		_userID = userID;
 		_username = username;
@@ -46,7 +46,7 @@ public class User {
 		return _hash;
 	}
 
-	public String get_role() {
+	public int get_role() {
 		return _role;
 	}
 	
