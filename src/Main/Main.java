@@ -1,69 +1,48 @@
 package Main;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.Date;
 
-import arduino2.TwoWaySerialComm;
-import arduino2.TwoWaySerialComm.SerialWriter;
-import database.access.DBFactory;
+import Security.Encryption;
+import Security.IEncryption;
+import Test.Mocks.MockClock;
+import arduino.ITwoWaySerialComm;
+import arduino.TwoWayCommFactory;
+import arduino.TwoWaySerialComm;
+import database.repository.INFCRepository;
 import database.repository.NFCRepository;
-import database.types.Door;
-import database.types.User;
-
-
-
-
 
 public class Main 
 {
-	static Scanner s = new Scanner(System.in);
-	int doorID;
 	
+	
+	final static int doorID = 1;
+	final static int keyLength = 8;
 	
 	public static void main(String[] args) throws Exception 
 	{
-		System.out.println("NFC Door System V0.3 - Enter a DoorID to simulate");
-		int doorID = s.nextInt();
-		Door.setCurrentDoor(doorID);
+		
+		// Bootstrap application dependencies
+		final INFCRepository repo = new NFCRepository("jdbc:mysql://51.255.42.59:3306/NFC" , "jroot"  , "javapassword");		
+		final IEncryption encryption = new Encryption();		
+		final ITwoWaySerialComm outputComm =  new TwoWaySerialComm(TwoWayCommFactory.getSerialPort("COM3"));
+		final ITwoWaySerialComm inputComm =  new TwoWaySerialComm(TwoWayCommFactory.getSerialPort("COM10"));			
+		final IClock realTime = new Clock();
 		
 		
-		/*
-		 * These lines are needed, if done statically, can really mess the DB factory up...
-		 */
-		NFCRepository db = new NFCRepository("jdbc:mysql://51.255.42.59:3306/NFC" , "jroot"  , "javapassword");
-		Thread.sleep(200);
-		boolean b = db.isValidDoorID(doorID);
-		if(b)
+		final MockClock fakeTime = new MockClock(new Date(Date.UTC(2012, 12, 1, 4, 0, 1)));
+		
+		// create main logic
+		final ILogic logic = new Logic(repo, encryption,inputComm,outputComm,fakeTime);
+		
+		// monitor a given door forever
+		while(true)
 		{
-		Door.setCurrentDoor(doorID);
-		
-		}
-		
-		try
-        {
-            (new TwoWaySerialComm()).connect("COM10");
-            
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-        }
-		
-		
-		TwoWaySerialComm.writeData("2");
-		
-		
-		
-		
-
+			fakeTime.setSeed(new Date(Date.UTC(2015, 12, 1, 4, 0, 1)));
+			logic.monitorDoor(doorID, keyLength);
+			Thread.sleep(500);
+		}		
 	}
-	
-	
-	
-	
 }
+
 
 

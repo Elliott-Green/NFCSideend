@@ -1,21 +1,20 @@
 package database.repository;
 
+import java.sql.JDBCType;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import Security.Logic;
 import database.access.DBFactory;
+import database.access.DBParam;
 import database.access.IUnitOfWork;
-import database.types.Door;
-import database.types.Section;
+import database.types.Mapping;
 import database.types.User;
-
+import database.types.UserDoorAccess;
 
 public class NFCRepository implements INFCRepository{
 
-	private final DBFactory _dbFactory;
+	private final DBFactory _dbFactory;	
 
 	public NFCRepository(String connectionString, String username, String password)
 	{
@@ -23,18 +22,35 @@ public class NFCRepository implements INFCRepository{
 	}	
 
 
+
+	//	public boolean addNewUserToSystem(String username, String password, String key, int role) throws ClassNotFoundException, SQLException
+	//	{
+	//		PreparedStatement ps = null;
+	//		Connection conn = DriverManager.getConnection("jdbc:mysql://51.255.42.59:3306/NFC" , "jroot"  , "javapassword");
+	//		String updateQuery = "INSERT INTO USERS(_username, _password, _key, _roleID) VALUES (?,?,?,?)";
+	//		ps = (PreparedStatement) conn.prepareStatement(updateQuery);
+	//		ps.setString(1, username);
+	//		ps.setString(2, password);
+	//		ps.setString(3, key);
+	//		ps.setInt(4, role);
+	//		
+	//		ps.execute();
+	//			
+	//		System.out.println("You have been added to the db by method - NFCREPO.addNewUserToSystem.");
+	//		return true;
+	//
+	//	}
+
 	@Override
 	public ArrayList<User> GetAllUsers() throws Exception 
 	{
-		//try and get a result set of all the users
 		IUnitOfWork uow = null;
+		
 		try
 		{
 			uow = _dbFactory.CreateUnitOfWork();
-
 			ResultSet rs =   uow.RunStatement("SELECT * FROM USERS");
-			return mapUsers(rs);
-
+			return Mapping.mapUsers(rs);
 		}
 		catch(ClassNotFoundException ex)
 		{
@@ -42,282 +58,74 @@ public class NFCRepository implements INFCRepository{
 		}	
 		finally
 		{
-			uow.Done();
+			if(uow != null)uow.Done();
 		}
 	}
 
 	@Override
-	public User GetMatchingUser(String key) throws Exception 
+	public void logUserAccess(int userID, int doorID) throws Exception 
 	{
-		//try and get a result set of all the users
+		HashMap<String, DBParam> params = new HashMap<>();
+		params.put("userID" , new DBParam(String.valueOf(userID), JDBCType.INTEGER));
+		params.put("doorID" , new DBParam(String.valueOf(doorID), JDBCType.INTEGER));
+		IUnitOfWork uow = null;
+		
 		try
 		{
-			IUnitOfWork uow = _dbFactory.CreateUnitOfWork();
-
-			ResultSet rs =  uow.RunStatement("SELECT * FROM USERS where _key LIKE \"%"+ key +"%\"");
-
-			ArrayList<User> users = mapUsers(rs);
-
-			if (users.isEmpty()) throw new Exception("User not found");
-			return users.get(0);
-		}
+			uow = _dbFactory.CreateUnitOfWork();	
+			uow.RunStoredProcedure("sp_NFC_insert", params);
+		} 
 		catch(ClassNotFoundException ex)
 		{
 			throw new Exception("Unable to query database", ex);
+		}	
+		finally
+		{
+			if(uow != null)uow.Done();
 		}
-
 	}
 
 	@Override
-	public boolean isValidKey(String key) throws Exception 
-	{
-		//try and get a result set of all the users
+	public ArrayList<UserDoorAccess> getUserDoorAccess(int userID, int doorID) throws Exception {
+		
+		IUnitOfWork uow = null;
 		try
 		{
-			IUnitOfWork uow = _dbFactory.CreateUnitOfWork();
-
-			ResultSet rs =  uow.RunStatement("SELECT * FROM USERS where _key LIKE \"%"+ key +"%\"");
-			ArrayList<User> users = mapUsers(rs);
-
-			
-			//get the first and hopefully only record
-			if(key.equals(users.get(0).get_key()))
-			{
-				System.out.println("Welcome " + users.get(0).get_username() +" "+ users.get(0).get_password());
-				//log door entry
-				return true;
-			}
-			else
-			{
-
-			}
-		}
+			uow = _dbFactory.CreateUnitOfWork();
+			String sql = "SELECT AP._startTime,AP._endTime,U._userID,D._doorID FROM USERS AS U " +
+							"INNER JOIN USERSROLE AS UR " +
+								"ON U._userID = UR._userID "+
+							"INNER JOIN ROLE AS R " +
+								"ON R._roleID = UR._roleID "+
+							"INNER JOIN ROLEDOORGROUP AS RDG "+
+								"ON RDG._roleID = R._roleID " +
+							"INNER JOIN DOORGROUP AS DG "+						
+								"ON DG._doorGroupID = RDG._doorGroupID "+
+							"INNER JOIN DOORGROUPDOOR AS DGD "+
+								"ON DGD._doorGroupID = DG._doorGroupID "+
+							"INNER JOIN DOOR AS D "+
+								"ON D._doorID = DGD._doorID "+
+							"INNER JOIN DOORAVAILABLEPERIOD AS DAP "+
+								"ON DAP._doorGroupID = DGD._doorGroupID "+
+							"INNER JOIN AVAILABLEPERIOD AS AP "+
+								"ON AP._availableID = DAP._availableID "+
+							"WHERE U._userID ="+ String.valueOf(userID) +
+							" AND D._doorID ="+ String.valueOf(doorID) +
+							" GROUP BY "+
+								"AP._startTime,"+
+								"AP._endTime,"+
+								"U._userID,"+
+								"D._doorID";		
+			ResultSet rs = uow.RunStatement(sql);			
+			return Mapping.mapUserDoorAccess(rs);
+		} 
 		catch(ClassNotFoundException ex)
 		{
 			throw new Exception("Unable to query database", ex);
-		}
-
-		return false;
-
-
-	}
-
-
-	
-	
-	
-
-
-	@Override
-	public User getKeys() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	//write a method you have key -> you need the salt
-
-	public String getUsersSalt(String key)
-	{
-		//try and get a result set of all the users
-		try
+		}	
+		finally
 		{
-			IUnitOfWork uow = _dbFactory.CreateUnitOfWork();
-			ResultSet rs =  uow.RunStatement("SELECT * FROM USERS where _key LIKE \"%"+ key +"%\"");
-			ArrayList<User> users = mapUsers(rs);
-			String salt = users.get(0).get_salt();
-			return salt;
-		} 
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-			return null;
-	}
-	
-	public String getUsersHash(String key)
-	{
-		//try and get a result set of all the users
-		try
-		{
-			IUnitOfWork uow = _dbFactory.CreateUnitOfWork();
-			ResultSet rs =  uow.RunStatement("SELECT * FROM USERS where _key LIKE \"%"+ key +"%\"");
-			ArrayList<User> users = mapUsers(rs);
-			String salt = users.get(0).get_salt();
-			return salt;
-		} 
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-			return null;
-	}
-	
-	
-	public void getDoorTime(int doorID)
-	{
-		//try and get a result set of all the users
-		try
-		{
-			IUnitOfWork uow = _dbFactory.CreateUnitOfWork();
-			ResultSet rs =  uow.RunStatement("SELECT * FROM DOOR where _doorID = " + doorID);
-			Door Doors = mapDoors(rs);
-			Time in = Doors.get_doorTimeIn();
-			Time out = Doors.get_doorTimeOut();
-			
-			System.out.println("THE test of door time in was " + in );
-			System.out.println("THE test of door time out was " + out );
-		} 
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-			
-	}
-	
-	public void checkPermission(User u)
-	{
-		/*
-		 * attempting factory pattern
-		 */
-		int roleID = u.get_role();
-		switch(roleID)
-		{
-		case 1: Logic.seniorStaffPermission(); break;
-		case 2: Logic.juniorStaffPermission(); break;
-		case 3: Logic.studentPermission(); break;
-		case 4: Logic.dayStaffPermission(); break;
-		case 5: Logic.nightStaffPermission(); break;
-			
+			if(uow != null)uow.Done();
 		}
 	}
-	
-	
-	
-	public boolean isValidDoorID(int doorID) 
-	{
-		try
-		{
-			IUnitOfWork uow = _dbFactory.CreateUnitOfWork();
-			ResultSet rs =  uow.RunStatement("SELECT * FROM DOOR WHERE _doorID = " + doorID);
-			Door Doors = mapDoors(rs);
-			
-			/*
-			 * WRITE LOGIC TO SEE IF THERE IS NOT A DOOR, IF NOT THEN QUIT.
-			 */
-		
-		} 
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return false;
-		
-	}
-	
-	
-
-	
-	
-	
-	
-	
-	
-	/////////////////////////////////////////////////////////////////////
-	//mappings
-	/////////////////////////////////////////////////////////////////////
-	
-	/*
-	 * Maps users into an Arraylist from the ResultSet.
-	 * @Calls mapSingleUser
-	 */
-	private ArrayList<User> mapUsers(ResultSet rs) throws SQLException 
-	{
-		ArrayList<User> results = new ArrayList<User>();
-
-		while(rs.next())
-		{
-			results.add(mapUser(rs));
-		}
-
-		return results;
-	}
-
-	private User mapUser(ResultSet rs) throws SQLException
-	{
-		
-		Integer id = rs.getInt("_userID");
-		String un =rs.getString("_username");
-		String pw =rs.getString("_password");
-		String key =rs.getString("_key");
-		String salt = rs.getString("_salt");
-		String hash = rs.getString("_hash");
-		int role =rs.getInt("_roleID");
-		return new User(id,un,pw, key,salt,hash, role);
-	}
-	
-	
-	
-	///////////////////////////////////////////////////////////////////////
-	
-	/*
-	 * Maps users into an Arraylist from the ResultSet.
-	 * @Calls mapSingleUser
-	 */
-	private ArrayList<Door> mapDoor(ResultSet rs) throws SQLException 
-	{
-		ArrayList<Door> results = new ArrayList<Door>();
-
-		while(rs.next())
-		{
-			results.add(mapDoors(rs));
-		}
-
-		return results;
-	}
-	private Door mapDoors(ResultSet rs) throws SQLException
-	{
-		if(rs.next())
-		{
-			int id = rs.getInt("_doorID");
-			String name =rs.getString("_doorName");
-			Time tin =rs.getTime("_doorTimeIn");
-			Time tout =rs.getTime("_doorTimeOut");
-			int bid =rs.getInt("_buildingID");
-			return new Door(id,name,tin,tout,bid);
-		}
-		return null;
-
-	}
-
-///////////////////////////////////////////////////////////////////////
-	private ArrayList<Section> mapSection(ResultSet rs) throws SQLException 
-	{
-		ArrayList<Section> results = new ArrayList<Section>();
-
-		while(rs.next())
-		{
-			results.add(mapSections(rs));
-		}
-
-		return results;
-	}
-	private Section mapSections(ResultSet rs) throws SQLException
-	{
-		if(rs.next())
-		{
-			
-			int sectionID = rs.getInt("_sectionID");
-			int roleID = rs.getInt("_roleID");
-			int doorID = rs.getInt("_doorID");
-	
-			return new Section(sectionID,roleID,doorID);
-		}
-		return null;
-
-	}
-
-
-	
-
-
-	}	
+}	
