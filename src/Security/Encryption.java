@@ -13,4 +13,10 @@ public class Encryption implements IEncryption {
 	{	
 			return BCrypt.checkpw(key, hash);				
 	}
+
+	@Override
+	public String convertKeyToHash(String key) 
+	{
+		return BCrypt.hashpw(key, BCrypt.gensalt(12));
+	}
 }

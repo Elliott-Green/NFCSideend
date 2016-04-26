@@ -19,19 +19,18 @@ public class MockNFCRepository implements INFCRepository {
 
 	@Override
 	public ArrayList<User> GetAllUsers() throws Exception {
-		// TODO Auto-generated method stub
 		return _allUsers;
 	}
 
 	@Override
 	public void logUserAccess(int userID, int doorID) throws Exception {
 		// TODO Auto-generated method stub
+		//cant do needs DB access - not live
 
 	}
 
 	@Override
 	public ArrayList<UserDoorAccess> getUserDoorAccess(int userID, int doorID) throws Exception {
-		// TODO Auto-generated method stub
 		return _userDoorAccess;
 	}
 

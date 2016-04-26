@@ -1,4 +1,4 @@
-package Main;
+package main;
 
 
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class Logic implements ILogic {
 	{
 		Date d = _clock.getNow();
 		long now = d.getTime();
-		_repo.logUserAccess(userID, doorID);
+
 		ArrayList<UserDoorAccess> access = _repo.getUserDoorAccess(userID, doorID);
 
 		if(access.isEmpty()) return false;
@@ -75,10 +75,20 @@ public class Logic implements ILogic {
 		{
 			final UserDoorAccess uda = a;
 
-			if(uda.get_startTime().getHours() == 0 && uda.get_startTime().getMinutes() == 0 && uda.get_endTime().getHours() == 0 && uda.get_endTime().getMinutes() == 0 || uda.get_startTime().getTime() <= now && uda.get_endTime().getTime() >= now)
-			{			
+			
+			//office permissions without time
+			if(uda.get_doorID() == doorID && uda.get_userID() == userID)
+			{
+				_repo.logUserAccess(userID, doorID);
 				return true;
 			}
+			//door permissions with time
+			if(uda.get_startTime().getHours() == 0 && uda.get_startTime().getMinutes() == 0 && uda.get_endTime().getHours() == 0 && uda.get_endTime().getMinutes() == 0 || uda.get_startTime().getTime() <= now && uda.get_endTime().getTime() >= now)
+			{		
+				_repo.logUserAccess(userID, doorID);
+				return true;
+			}
+			
 		}
 		return false;
 	}

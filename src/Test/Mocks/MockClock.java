@@ -2,7 +2,7 @@ package Test.Mocks;
 
 import java.util.Date;
 
-import Main.IClock;
+import main.IClock;
 
 public class MockClock implements IClock {
 	private Date _seed;

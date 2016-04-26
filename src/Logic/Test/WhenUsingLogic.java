@@ -8,9 +8,6 @@ import org.junit.Test;
 
 import com.mysql.fabric.xmlrpc.base.Data;
 
-import Main.IClock;
-import Main.ILogic;
-import Main.Logic;
 import Security.IEncryption;
 import Test.Mocks.MockClock;
 import Test.Mocks.MockEncryption;
@@ -21,6 +18,9 @@ import arduino.ITwoWaySerialComm;
 import database.repository.INFCRepository;
 import database.types.User;
 import database.types.UserDoorAccess;
+import main.IClock;
+import main.ILogic;
+import main.Logic;
 
 public class WhenUsingLogic 
 {

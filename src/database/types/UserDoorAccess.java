@@ -3,7 +3,6 @@ package database.types;
 import java.sql.Time;
 
 public class UserDoorAccess {
-
 	private final Time _startTime;
 	private final Time _endTime;
 	private final int _userID;
@@ -17,7 +16,7 @@ public class UserDoorAccess {
 		_userID = userID;
 		_doorID = doorID;
 	}
-
+	
 	public Time get_startTime() {
 		return _startTime;
 	}

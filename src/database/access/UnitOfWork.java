@@ -16,10 +16,10 @@ import java.util.List;
 
 
 public class UnitOfWork implements IUnitOfWork {
-	
+
 	private final Connection _conn;
 
-	
+
 	public UnitOfWork(Connection conn){
 		_conn = conn;
 	}
@@ -35,10 +35,10 @@ public class UnitOfWork implements IUnitOfWork {
 		try
 		{
 			ResultSet rs = null;
-			
+
 			PreparedStatement statement = _conn.prepareStatement(sql);
 			rs = statement.executeQuery();
-			
+
 			return rs;
 		}
 		catch(SQLException ex)
@@ -48,84 +48,82 @@ public class UnitOfWork implements IUnitOfWork {
 		}
 	}
 
-	
-	
+
+
 
 
 	@Override
 	public void RunStoredProcedure(String sprocName, HashMap<String, DBParam> params ) throws Exception {
-		
-//		if(sprocName.equals(null)){
-//			throw new Exception("Invalid sproc name");
-//		}
-//		if(!params.containsKey("userID")){
-//			throw new Exception("Must supply userID");
-//		}	
-//		if(!params.containsKey("doorID")){
-//			throw new Exception("Must supply doorID");
-//		}
-//		
-//		int userID =  Integer.parseInt(params.get("userID"));
-//		int doorID =  Integer.parseInt(params.get("doorID"));
-		
-		int paramSize = params.size();
-		StringBuilder sb = new StringBuilder();
-		sb.append("{CALL ")
+
+		try{
+
+			int paramSize = params.size();
+			StringBuilder sb = new StringBuilder();
+			sb.append("{CALL ")
 			.append(sprocName)
 			.append("(");
-			
-		for(int i=0; i<paramSize; i++)
-		{
-			sb.append("?");
-			if(i < paramSize - 1)
-			{
-				sb.append(",");
-			}
-			
-		}
-		sb.append(")}");
-		String call = sb.toString();
-		PreparedStatement cs = _conn.prepareStatement(call);
-		//debug
-		System.out.println("you called : " + call);
-		
-		int index = 1;
-		
-		for(DBParam param : params.values())
-		{
-			switch(param.getType())
-			{
 
-			case BIT:
-				cs.setBoolean(index, param.getValue() == "1" ? true : false);
-				break;
-			case DATE:
-				//TODO
-				//cs.setDate(index, Date.parse(param.getValue()));
-				break;
-			case INTEGER:
-				cs.setInt(index, Integer.parseInt(param.getValue()));
-				break;
-			case NVARCHAR:
-				cs.setString(index, param.getValue());
-				break;
-			case TIME:
-				//toDO
-				//cs.setTime(index, Time.parse(param.getValue()));
-				break;
-			default:
-				throw new Exception("This database type not supported : " + param.getType().getName());
+			for(int i=0; i<paramSize; i++)
+			{
+				sb.append("?");
+				if(i < paramSize - 1)
+				{
+					sb.append(",");
+				}
+
 			}
-			index++;
+			sb.append(")}");
+			String call = sb.toString();
+			PreparedStatement cs = _conn.prepareStatement(call);
+			//debug
+			System.out.println("you called : " + call);
+
+			int index = 1;
+
+			for(DBParam param : params.values())
+			{
+				switch(param.getType())
+				{
+
+				case BIT:
+					cs.setBoolean(index, param.getValue() == "1" ? true : false);
+					break;
+				case DATE:
+					//TODO
+					//cs.setDate(index, Date.parse(param.getValue()));
+					break;
+				case INTEGER:
+					cs.setInt(index, Integer.parseInt(param.getValue()));
+					break;
+				case NVARCHAR:
+					cs.setString(index, param.getValue());
+					break;
+				case TIME:
+					//toDO
+					//cs.setTime(index, Time.parse(param.getValue()));
+					break;
+				default:
+					throw new Exception("This database type not supported : " + param.getType().getName());
+				}
+				index++;
+			}
+
+			System.out.println("This is the SPROC call :" + sprocName);
+
+
+
+
+			cs.execute(); 
 		}
-		
-		System.out.println("This is the SPROC call :" + sprocName);
-		
-	
-		
-		
-		cs.execute(); 
-		
+		catch(Exception e)
+		{
+			e.getMessage();
+		}
+		finally
+		{
+			Done();
+		}
+
 	}
 
 	@Override

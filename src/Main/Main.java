@@ -1,4 +1,4 @@
-package Main;
+package main;
 
 import java.util.Date;
 
@@ -15,7 +15,7 @@ public class Main
 {
 	
 	
-	final static int doorID = 1;
+	final static int doorID = 24;
 	final static int keyLength = 8;
 	
 	public static void main(String[] args) throws Exception 
@@ -28,16 +28,15 @@ public class Main
 		final ITwoWaySerialComm inputComm =  new TwoWaySerialComm(TwoWayCommFactory.getSerialPort("COM10"));			
 		final IClock realTime = new Clock();
 		
-		
 		final MockClock fakeTime = new MockClock(new Date(Date.UTC(2012, 12, 1, 4, 0, 1)));
 		
 		// create main logic
-		final ILogic logic = new Logic(repo, encryption,inputComm,outputComm,fakeTime);
+		final ILogic logic = new Logic(repo, encryption,inputComm,outputComm,realTime);
 		
 		// monitor a given door forever
 		while(true)
 		{
-			fakeTime.setSeed(new Date(Date.UTC(2015, 12, 1, 4, 0, 1)));
+			//fakeTime.setSeed(new Date(Date.UTC(2015, 12, 1, 4, 0, 1)));
 			logic.monitorDoor(doorID, keyLength);
 			Thread.sleep(500);
 		}		

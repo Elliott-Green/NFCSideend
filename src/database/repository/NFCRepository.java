@@ -85,6 +85,7 @@ public class NFCRepository implements INFCRepository{
 		}
 	}
 
+	//gets office permissions too (reiteration)
 	@Override
 	public ArrayList<UserDoorAccess> getUserDoorAccess(int userID, int doorID) throws Exception {
 		
@@ -92,30 +93,49 @@ public class NFCRepository implements INFCRepository{
 		try
 		{
 			uow = _dbFactory.CreateUnitOfWork();
-			String sql = "SELECT AP._startTime,AP._endTime,U._userID,D._doorID FROM USERS AS U " +
-							"INNER JOIN USERSROLE AS UR " +
-								"ON U._userID = UR._userID "+
-							"INNER JOIN ROLE AS R " +
-								"ON R._roleID = UR._roleID "+
-							"INNER JOIN ROLEDOORGROUP AS RDG "+
-								"ON RDG._roleID = R._roleID " +
-							"INNER JOIN DOORGROUP AS DG "+						
-								"ON DG._doorGroupID = RDG._doorGroupID "+
-							"INNER JOIN DOORGROUPDOOR AS DGD "+
-								"ON DGD._doorGroupID = DG._doorGroupID "+
-							"INNER JOIN DOOR AS D "+
-								"ON D._doorID = DGD._doorID "+
-							"INNER JOIN DOORAVAILABLEPERIOD AS DAP "+
-								"ON DAP._doorGroupID = DGD._doorGroupID "+
-							"INNER JOIN AVAILABLEPERIOD AS AP "+
-								"ON AP._availableID = DAP._availableID "+
-							"WHERE U._userID ="+ String.valueOf(userID) +
-							" AND D._doorID ="+ String.valueOf(doorID) +
-							" GROUP BY "+
-								"AP._startTime,"+
-								"AP._endTime,"+
-								"U._userID,"+
-								"D._doorID";		
+			String sql = "SELECT  AP._startTime, "+
+						"AP._endTime, "+
+						"U._userID, "+
+				        "D._doorID "+
+						"FROM USERS AS U "+
+						"INNER JOIN USERSROLE AS UR "+
+						"ON U._userID = UR._userID "+
+						"INNER JOIN ROLE AS R "+
+						"ON R._roleID = UR._roleID "+
+						"INNER JOIN ROLEDOORGROUP AS RDG "+
+						"ON RDG._roleID = R._roleID  "+
+						"INNER JOIN DOORGROUP AS DG "+
+						"ON DG._doorGroupID = RDG._doorGroupID "+
+						"INNER JOIN DOORGROUPDOOR AS DGD "+
+						"ON DGD._doorGroupID = DG._doorGroupID "+
+						"INNER JOIN DOOR AS D "+
+						"ON D._doorID = DGD._doorID "+
+						"INNER JOIN DOORAVAILABLEPERIOD AS DAP "+
+						"ON DAP._doorGroupID = DGD._doorGroupID "+
+						"INNER JOIN AVAILABLEPERIOD AS AP "+
+						"ON AP._availableID = DAP._availableID "+
+						"WHERE U._userID = "+ String.valueOf(userID) +
+						" AND D._doorID = "+ String.valueOf(doorID) +
+						" UNION "+
+						"SELECT AP._startTime, "+
+						"AP._endTime, "+
+						"U._userID, "+
+						"D._doorID "+	
+						"FROM OFFICE AS O  " +     
+						"INNER JOIN DOOR AS D "+
+						"ON O._doorID = D._doorID "+
+						"INNER JOIN USERS AS U "+
+						"ON U._userID = O._userID "+
+						"LEFT JOIN DOORGROUPDOOR AS DGD "+
+						"ON D._doorID = DGD._doorID "+
+						"LEFT JOIN DOORGROUP AS DG "+
+						"ON DG._doorGroupID = DGD._doorGroupID "+
+						"LEFT JOIN DOORAVAILABLEPERIOD AS DAP "+
+						"ON DAP._doorGroupID = DGD._doorGroupID "+
+						"LEFT JOIN AVAILABLEPERIOD AS AP "+
+						"ON AP._availableID = DAP._availableID "+
+						"WHERE U._userID = "+ String.valueOf(userID) +
+						" AND D._doorID = "+ String.valueOf(doorID) +";";	
 			ResultSet rs = uow.RunStatement(sql);			
 			return Mapping.mapUserDoorAccess(rs);
 		} 
@@ -128,4 +148,5 @@ public class NFCRepository implements INFCRepository{
 			if(uow != null)uow.Done();
 		}
 	}
+	
 }	
