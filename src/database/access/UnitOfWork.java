@@ -1,29 +1,27 @@
 package database.access;
 
-
-import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.HashMap;
-import java.util.List;
-
-
-
-
 
 public class UnitOfWork implements IUnitOfWork {
 
 	private final Connection _conn;
 
-
-	public UnitOfWork(Connection conn){
+	
+	public UnitOfWork(Connection conn)
+	{
 		_conn = conn;
 	}
 
+	/*
+	 * Very bad to handle raw SQL strings, within a closed enviroment I allow this practice.
+	 * 
+	 * Input : @String of SQL to be sent to database.
+	 * Output : A ResultSet of that query.
+	 */
 	@Override
 	public ResultSet RunStatement(String sql) throws SQLException 
 	{
@@ -35,7 +33,6 @@ public class UnitOfWork implements IUnitOfWork {
 		try
 		{
 			ResultSet rs = null;
-
 			PreparedStatement statement = _conn.prepareStatement(sql);
 			rs = statement.executeQuery();
 
@@ -47,11 +44,15 @@ public class UnitOfWork implements IUnitOfWork {
 			throw ex;
 		}
 	}
-
-
-
-
-
+	
+	/*
+	 * A better way to deal with queries that are state changing (insert,update,delete)
+	 * This method calls a SP on the database with the relevant types being changed into their SQL type counterpart.
+	 * 
+	 * Input: @String of the sprocs name, @HashMap of the String versions of data, and what data-type the db row is.
+	 * Output : Two visual console prints. One to confirm the sproc name is valid, and another to confirm that the statement has been executed.
+	 * 
+	 */
 	@Override
 	public void RunStoredProcedure(String sprocName, HashMap<String, DBParam> params ) throws Exception {
 
@@ -89,7 +90,7 @@ public class UnitOfWork implements IUnitOfWork {
 					cs.setBoolean(index, param.getValue() == "1" ? true : false);
 					break;
 				case DATE:
-					//TODO
+					//toDO
 					//cs.setDate(index, Date.parse(param.getValue()));
 					break;
 				case INTEGER:
@@ -126,17 +127,15 @@ public class UnitOfWork implements IUnitOfWork {
 
 	}
 
+	/*
+	 * VPS doesn't close connections by default, this method closes the current connection.
+	 * 
+	 * Void : closes the connection
+	 */
 	@Override
-	public void Done() throws SQLException {
-		// TODO Auto-generated method stub
+	public void Done() throws SQLException 
+	{
 		_conn.close();
 	}
-
-	@Override
-	public ResultSet RunStoredFunction(String funcName, HashMap<String, DBParam> params)
-			throws SQLException, Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}	
 
 }

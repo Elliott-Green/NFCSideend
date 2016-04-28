@@ -4,7 +4,6 @@ import java.sql.JDBCType;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import database.access.DBFactory;
 import database.access.DBParam;
 import database.access.IUnitOfWork;
@@ -12,6 +11,11 @@ import database.types.Mapping;
 import database.types.User;
 import database.types.UserDoorAccess;
 
+/*
+ * This class is created in Main.main and its constructor takes the parameters needed for creating a connection, and passes it to the new DBFactory object.
+ * The object can then be used to make relevant queries which would be returned by this class. 
+ * Effectively making queries calls on the iow (Connection) is considered best OO practice.
+ */
 public class NFCRepository implements INFCRepository{
 
 	private final DBFactory _dbFactory;	
@@ -23,24 +27,11 @@ public class NFCRepository implements INFCRepository{
 
 
 
-	//	public boolean addNewUserToSystem(String username, String password, String key, int role) throws ClassNotFoundException, SQLException
-	//	{
-	//		PreparedStatement ps = null;
-	//		Connection conn = DriverManager.getConnection("jdbc:mysql://51.255.42.59:3306/NFC" , "jroot"  , "javapassword");
-	//		String updateQuery = "INSERT INTO USERS(_username, _password, _key, _roleID) VALUES (?,?,?,?)";
-	//		ps = (PreparedStatement) conn.prepareStatement(updateQuery);
-	//		ps.setString(1, username);
-	//		ps.setString(2, password);
-	//		ps.setString(3, key);
-	//		ps.setInt(4, role);
-	//		
-	//		ps.execute();
-	//			
-	//		System.out.println("You have been added to the db by method - NFCREPO.addNewUserToSystem.");
-	//		return true;
-	//
-	//	}
-
+	/*
+	 * A simple SELECT * method.
+	 * 
+	 * Output: an ArrayList of type user with all the users on the database.
+	 */
 	@Override
 	public ArrayList<User> GetAllUsers() throws Exception 
 	{
@@ -62,6 +53,12 @@ public class NFCRepository implements INFCRepository{
 		}
 	}
 
+	/*
+	 * This method calls a SP on the database which inputs 4 parameters in the 'NFC.DETAILS' table 
+	 * (userID, doorID, DATABASE.time, DATABASE.date)
+	 * 
+	 * Void : inserts a row into database table
+	 */
 	@Override
 	public void logUserAccess(int userID, int doorID) throws Exception 
 	{
@@ -77,7 +74,7 @@ public class NFCRepository implements INFCRepository{
 		} 
 		catch(ClassNotFoundException ex)
 		{
-			throw new Exception("Unable to query database", ex);
+			throw new Exception("Unable to query database log", ex);
 		}	
 		finally
 		{
@@ -85,7 +82,16 @@ public class NFCRepository implements INFCRepository{
 		}
 	}
 
-	//gets office permissions too (reiteration)
+	/*
+	 * See dissertation(Database queries)
+	 * 
+	 * This method finds users permissions on a certain door using a SELECT statement.
+	 * The query gets all permissions on current users role (Database logic) and also checks if an office is being used (union).
+	 * 
+	 * Input: userID, doorID
+	 * Output : An ArrayList of permission type containing two dates
+	 * 		  : Empty array if no permissions
+	 */
 	@Override
 	public ArrayList<UserDoorAccess> getUserDoorAccess(int userID, int doorID) throws Exception {
 		
@@ -141,12 +147,33 @@ public class NFCRepository implements INFCRepository{
 		} 
 		catch(ClassNotFoundException ex)
 		{
-			throw new Exception("Unable to query database", ex);
+			throw new Exception("Unable to query database access", ex);
 		}	
 		finally
 		{
 			if(uow != null)uow.Done();
 		}
 	}
+	
+	
+
+
+	//	public boolean addNewUserToSystem(String username, String password, String key, int role) throws ClassNotFoundException, SQLException
+	//	{
+	//		PreparedStatement ps = null;
+	//		Connection conn = DriverManager.getConnection("jdbc:mysql://51.255.42.59:3306/NFC" , "jroot"  , "javapassword");
+	//		String updateQuery = "INSERT INTO USERS(_username, _password, _key, _roleID) VALUES (?,?,?,?)";
+	//		ps = (PreparedStatement) conn.prepareStatement(updateQuery);
+	//		ps.setString(1, username);
+	//		ps.setString(2, password);
+	//		ps.setString(3, key);
+	//		ps.setInt(4, role);
+	//		
+	//		ps.execute();
+	//			
+	//		System.out.println("You have been added to the db by method - NFCREPO.addNewUserToSystem.");
+	//		return true;
+	//
+	//	}
 	
 }	

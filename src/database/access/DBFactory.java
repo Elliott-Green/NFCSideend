@@ -17,6 +17,12 @@ private final String _pw;
 		_pw = password;
 	}
 	
+	/*
+	 * This class is required for any database calls from within the DBRepo because its responsible for the driver and the connection strings.
+	 * 
+	 * Input : call when Constructor has been made.
+	 * Output : a Connection object with passed values.
+	 */
 	public IUnitOfWork CreateUnitOfWork() throws  SQLException, ClassNotFoundException
 	{
 		Class.forName("com.mysql.jdbc.Driver");

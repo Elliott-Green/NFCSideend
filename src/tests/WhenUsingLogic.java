@@ -3,27 +3,18 @@ package tests;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.mindrot.jbcrypt.BCrypt;
-
-import com.mysql.fabric.xmlrpc.base.Data;
-
-import Security.IEncryption;
 import Test.Mocks.MockClock;
 import Test.Mocks.MockEncryption;
 import Test.Mocks.MockNFCRepository;
 import Test.Mocks.MockTwoWaySerialComm;
-import Test.Mocks.MockUserDoorAccess;
 import arduino.DoorResult;
-import arduino.ITwoWaySerialComm;
 import arduino.TwoWayCommFactory;
 import arduino.TwoWaySerialComm;
-import database.repository.INFCRepository;
 import database.types.User;
 import database.types.UserDoorAccess;
-import main.IClock;
 import main.ILogic;
 import main.Logic;
 import main.Main;
@@ -46,6 +37,7 @@ public class WhenUsingLogic
 	/*
 	 * Tests the main methods used 
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void whenCallingMonitorDoorShouldReadKeyFromInput()
 	{
@@ -129,6 +121,7 @@ public class WhenUsingLogic
 	/*
 	 * tests boolean inverse ???
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void whenIncorrectDoorAccess()
 	{
@@ -173,6 +166,7 @@ public class WhenUsingLogic
 	/*
 	 * status code 2 
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void whenUserNotFound()
 	{

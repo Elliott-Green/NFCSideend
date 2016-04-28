@@ -61,6 +61,7 @@ public class Logic implements ILogic {
 		}
 	}	
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean userCanAccessDoor(int userID, int doorID) throws Exception
 	{

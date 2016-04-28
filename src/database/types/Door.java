@@ -1,7 +1,5 @@
 package database.types;
 
-import java.sql.Time;
-
 public class Door 
 {	
 	private final int _doorID;
