@@ -15,7 +15,7 @@ public class Main
 {
 	
 	
-	final static int doorID = 24;
+	final static int doorID = 8;
 	final static int keyLength = 8;
 	
 	public static void main(String[] args) throws Exception 

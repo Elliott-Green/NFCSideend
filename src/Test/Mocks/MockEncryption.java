@@ -25,4 +25,11 @@ public class MockEncryption implements IEncryption{
 		return _keysMatchCalled;
 		
 	}
+
+
+	@Override
+	public String convertKeyToHash(String key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -52,5 +52,11 @@ public class MockTwoWaySerialComm implements ITwoWaySerialComm {
 	{
 		return _readCalled;
 	}
+	public boolean mockSerialConnection(int status)
+	{
+		 if(status == 1) return true;
+		 else return false;
+	
+	}
 	
 }

@@ -11,10 +11,10 @@ public class MockNFCRepository implements INFCRepository {
 	private final ArrayList<User> _allUsers;
 	private final ArrayList<UserDoorAccess> _userDoorAccess;
 
-	public MockNFCRepository(ArrayList<User> allUsers,ArrayList<UserDoorAccess> userDoorAccess) {
+	public MockNFCRepository(ArrayList<User> allUsers,ArrayList<UserDoorAccess> uda) {
 		// 
 		_allUsers = allUsers;
-		_userDoorAccess = userDoorAccess;
+		_userDoorAccess = uda;
 	}
 
 	@Override
