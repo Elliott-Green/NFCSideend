@@ -1,5 +1,7 @@
 package main;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import Security.Encryption;
 import Security.IEncryption;
 import arduino.ITwoWaySerialComm;
@@ -7,6 +9,7 @@ import arduino.TwoWayCommFactory;
 import arduino.TwoWaySerialComm;
 import database.repository.INFCRepository;
 import database.repository.NFCRepository;
+import database.types.User;
 
 public class Main 
 {
@@ -30,13 +33,28 @@ public class Main
 
 		//Create main logic
 		final ILogic logic = new Logic(repo, encryption,inputComm,outputComm,realTime);
+
 		
-		//Monitor a given door forever
-		while(true)
-		{
-			logic.monitorDoor(doorID, keyLength);
-			Thread.sleep(500);
-		}		
+		
+//		//Monitor a given door forever
+//		while(true)
+//		{
+//			logic.monitorDoor(doorID, keyLength);
+//			Thread.sleep(500);
+//		}	
+		
+		
+		//logic.addUserToSystem("This is a test", "testing java method call ", "test hash", 2);
+		
+		String testHash = BCrypt.hashpw("test", BCrypt.gensalt(12));
+		repo.createNewUser("test", "test",testHash);
+		
+		
+		
+		
+		
+		
+		
 	}
 }
 

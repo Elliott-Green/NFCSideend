@@ -52,6 +52,32 @@ public class NFCRepository implements INFCRepository{
 			if(uow != null)uow.Done();
 		}
 	}
+	
+	/*
+	 * Get hash, where hash is like hash
+	 * 
+	 * Output: the User
+	 */
+	@Override
+	public User getUserFromHash(String hashedKey) throws Exception 
+	{
+		IUnitOfWork uow = null;
+		
+		try
+		{
+			uow = _dbFactory.CreateUnitOfWork();
+			ResultSet rs =   uow.RunStatement("SELECT * FROM USERS WHERE _key LIKE " + hashedKey);
+			return Mapping.mapSingleUser(rs);
+		}
+		catch(ClassNotFoundException ex)
+		{
+			throw new Exception("Unable to query database", ex);
+		}	
+		finally
+		{
+			if(uow != null)uow.Done();
+		}
+	}
 
 	/*
 	 * This method calls a SP on the database which inputs 4 parameters in the 'NFC.DETAILS' table 
@@ -70,7 +96,7 @@ public class NFCRepository implements INFCRepository{
 		try
 		{
 			uow = _dbFactory.CreateUnitOfWork();	
-			uow.RunStoredProcedure("sp_NFC_insert", params);
+			uow.RunStoredProcedure("sp_NFC_insertDetails", params);
 		} 
 		catch(ClassNotFoundException ex)
 		{
@@ -81,6 +107,70 @@ public class NFCRepository implements INFCRepository{
 			if(uow != null)uow.Done();
 		}
 	}
+	
+	/*
+	 * This method calls a SP on the database which inputs 3 parameters into User
+	 * (username, lastname, hashed UID key)
+	 * 
+	 * Void : inserts a row into database table
+	 */
+	@Override
+	public void createNewUser(String username, String lastname, String hashedKey) throws Exception 
+	{
+		HashMap<String, DBParam> params = new HashMap<>();
+		params.put("username" , new DBParam(String.valueOf(username), JDBCType.NVARCHAR));
+		params.put("lastname" , new DBParam(String.valueOf(lastname), JDBCType.NVARCHAR));
+		params.put("hashkey" , new DBParam(String.valueOf(hashedKey), JDBCType.NVARCHAR));
+		IUnitOfWork uow = null;
+		
+		try
+		{
+			uow = _dbFactory.CreateUnitOfWork();	
+			uow.RunStoredProcedure("sp_NFC_insertUser", params);
+		} 
+		catch(ClassNotFoundException ex)
+		{
+			throw new Exception("Unable to query database log", ex);
+		}	
+		finally
+		{
+			if(uow != null)uow.Done();
+		}
+		
+		
+	}
+	
+	/*
+	 * Logic.getUserFromID
+	 * 
+	 * 
+	 */
+	@Override
+	public void createNewUserRole(User u, int roleID) throws Exception 
+	{
+		int userID = u.get_userID();
+		
+		HashMap<String, DBParam> params = new HashMap<>();
+		params.put("userID" , new DBParam(String.valueOf(userID), JDBCType.INTEGER));
+		params.put("roleID" , new DBParam(String.valueOf(roleID), JDBCType.INTEGER));
+		IUnitOfWork uow = null;
+		
+		try
+		{
+			uow = _dbFactory.CreateUnitOfWork();	
+			uow.RunStoredProcedure("sp_NFC_insertUserRole", params);
+		} 
+		catch(ClassNotFoundException ex)
+		{
+			throw new Exception("Unable to query database log", ex);
+		}	
+		finally
+		{
+			if(uow != null)uow.Done();
+		}
+	}
+	
+	
 
 	/*
 	 * See dissertation(Database queries)

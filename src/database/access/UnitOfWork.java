@@ -76,7 +76,7 @@ public class UnitOfWork implements IUnitOfWork {
 			sb.append(")}");
 			String call = sb.toString();
 			PreparedStatement cs = _conn.prepareStatement(call);
-			//debug
+			
 			System.out.println("you called : " + call);
 
 			int index = 1;
@@ -97,7 +97,7 @@ public class UnitOfWork implements IUnitOfWork {
 					cs.setInt(index, Integer.parseInt(param.getValue()));
 					break;
 				case NVARCHAR:
-					cs.setString(index, param.getValue());
+					cs.setString(1,param.toString());
 					break;
 				case TIME:
 					//toDO
@@ -110,7 +110,11 @@ public class UnitOfWork implements IUnitOfWork {
 			}
 
 			System.out.println("This is the SPROC call :" + sprocName);
-
+			
+			for(DBParam param : params.values())
+			{
+				System.out.println(param.getValue()+"  "+param.getValue().length());
+			}
 
 
 

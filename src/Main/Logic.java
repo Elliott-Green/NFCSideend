@@ -2,11 +2,14 @@ package main;
 
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import org.mindrot.jbcrypt.BCrypt;
 
 import Security.IEncryption;
 import arduino.DoorResult;
@@ -96,20 +99,46 @@ public class Logic implements ILogic {
 
 	//horrible if lots of user table rows
 	@Override
-	public User getUserFromKey(String key) throws Exception{
+	public User getUserFromKey(String key) throws Exception
+	{
 		ArrayList<User> users;
 		users = _repo.GetAllUsers();
 
-		Predicate<? super User> predicate = new Predicate<User>() {
+		Predicate<? super User> predicate = new Predicate<User>() 
+		{
 			@Override
-			public boolean test(User u) {
+			public boolean test(User u) 
+			{
 				return _encryption.compareKeyToHash(key, u.get_key());
 			}
 		};
 		
 		List<User> filtered = users.parallelStream().filter(predicate).collect(Collectors.toList());
 		if(filtered.size() < 1) return null;
+		
 		return filtered.get(0);
+	}
+	
+	/*
+	 * TO WRITE
+	 */
+	public User addUserToSystem(String username, String lastname, String UID, int roleID) throws Exception
+	{
+		//create new user on given information
+		String hashedKey = BCrypt.hashpw(UID, BCrypt.gensalt(12));
+		_repo.createNewUser(username, lastname, hashedKey);
+		
+		//let java sleep and the DB add
+		Thread.sleep(500);
+		User newUser = getUserFromKey(UID);
+		
+		//add role information
+		_repo.createNewUserRole(newUser, roleID);
+		
+		System.out.println("You added " + username + " " + lastname + " " + roleID + " " + hashedKey);
+		
+		return newUser;
+		
 	}
 	
 	private void writeDoorResult(DoorResult result) throws IOException{
