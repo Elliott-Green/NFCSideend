@@ -11,6 +11,7 @@ public interface INFCRepository {
 	void logUserAccess(int userID, int doorID) throws Exception;
 	ArrayList<UserDoorAccess> getUserDoorAccess(int userID,int doorID) throws Exception;
 	void createNewUser(String username, String lastname, String hashedKey) throws Exception;
-	void createNewUserRole(User u, int roleID) throws Exception;
+	void createNewUserRole(int userID, int roleID) throws Exception;
 	User getUserFromHash(String hashedKey) throws Exception;
+
 }

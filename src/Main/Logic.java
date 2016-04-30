@@ -2,10 +2,10 @@ package main;
 
 
 import java.io.IOException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -38,13 +38,16 @@ public class Logic implements ILogic {
 
 
 	@Override
-	public void monitorDoor(int doorID, int keyLength) {		
+	public void monitorDoor(int doorID, int keyLength) 
+	{		
 		String key = _inputComm.read(keyLength);
 
-		try {
+		try 
+		{
 			User u = getUserFromKey(key);
 			//if not a valid user, write to serial
-			if(u != null) {				
+			if(u != null) 
+			{				
 				if(userCanAccessDoor(u.get_userID(), doorID))
 				{
 					writeDoorResult(DoorResult.OpenDoor);
@@ -63,8 +66,25 @@ public class Logic implements ILogic {
 			e.printStackTrace();
 		}
 	}	
+	
+	@Override
+	public void monitorDoorInitiation(int keyLength) throws Exception 
+	{		
+		String UID = _inputComm.read(keyLength);
 
-	@SuppressWarnings("deprecation")
+		Scanner in = new Scanner(System.in);
+		System.out.println("Enter your first name");
+		String firstname = in.nextLine();
+		System.out.println("Enter your last name / password");
+		String lastname = in.nextLine();
+		System.out.println("Enter your role ID 1-7");
+		int roleID = in.nextInt();
+		System.out.println();
+		
+		addUserToSystem(firstname, lastname, UID, roleID);
+
+	}	
+
 	@Override
 	public boolean userCanAccessDoor(int userID, int doorID) throws Exception
 	{
@@ -93,55 +113,73 @@ public class Logic implements ILogic {
 				return true;
 			}
 			
+			
 		}
 		return false;
 	}
 
 	//horrible if lots of user table rows
 	@Override
-	public User getUserFromKey(String key) throws Exception
+	public User getUserFromKey(String hashedKey) throws Exception
 	{
 		ArrayList<User> users;
 		users = _repo.GetAllUsers();
 
-		Predicate<? super User> predicate = new Predicate<User>() 
-		{
+		Predicate<? super User> predicate = new Predicate<User>() {
 			@Override
-			public boolean test(User u) 
-			{
-				return _encryption.compareKeyToHash(key, u.get_key());
+			public boolean test(User u) {
+				return _encryption.compareKeyToHash(hashedKey, u.get_key());
 			}
 		};
 		
 		List<User> filtered = users.parallelStream().filter(predicate).collect(Collectors.toList());
 		if(filtered.size() < 1) return null;
-		
 		return filtered.get(0);
-	}
-	
-	/*
-	 * TO WRITE
-	 */
-	public User addUserToSystem(String username, String lastname, String UID, int roleID) throws Exception
-	{
-		//create new user on given information
-		String hashedKey = BCrypt.hashpw(UID, BCrypt.gensalt(12));
-		_repo.createNewUser(username, lastname, hashedKey);
-		
-		//let java sleep and the DB add
-		Thread.sleep(500);
-		User newUser = getUserFromKey(UID);
-		
-		//add role information
-		_repo.createNewUserRole(newUser, roleID);
-		
-		System.out.println("You added " + username + " " + lastname + " " + roleID + " " + hashedKey);
-		
-		return newUser;
-		
 	}
 	
 	private void writeDoorResult(DoorResult result) throws IOException{
 		_outputComm.write(result.getDoorValue());
+	}
+
+
+	@Override
+	public User addUserToSystem(String username, String lastname, String UID, int roleID) throws Exception 
+	{
+		String hashedKey = BCrypt.hashpw(UID, BCrypt.gensalt(12));
+		
+		if(getUserFromKey(UID) == null)
+		{
+		_repo.createNewUser(username, lastname, hashedKey);
+		
+		if(hashedKey.length() != 60) { System.out.println("BCrypt hashed incorrectly"); return null; }
+		User newUser = getUserFromKey(UID);
+		
+		
+		System.out.println(newUser.get_firstName());
+		System.out.print(newUser.get_lastName());
+		System.out.print(newUser.get_key());
+		System.out.print(newUser.get_userID());
+		System.out.println("you were added");
+		
+		addUserRoleToSystem( roleID, newUser.get_userID());
+		return newUser;
+		}
+		else
+		{
+			System.out.println("you are already a user");
+			return null;
+		}
+	}
+	
+
+
+
+	@Override
+	public void addUserRoleToSystem(int userID, int roleID) throws Exception 
+	{
+		_repo.createNewUserRole(roleID,userID);
+		if(userCanAccessDoor(userID, 1)) System.out.println("your permissions were added");
+		else System.out.println("Something went wrong");
+		
 	}
 }

@@ -11,13 +11,10 @@ import Test.Mocks.MockEncryption;
 import Test.Mocks.MockNFCRepository;
 import Test.Mocks.MockTwoWaySerialComm;
 import arduino.DoorResult;
-import arduino.TwoWayCommFactory;
-import arduino.TwoWaySerialComm;
 import database.types.User;
 import database.types.UserDoorAccess;
 import main.ILogic;
 import main.Logic;
-import main.Main;
 
 public class WhenUsingLogic 
 {
@@ -27,10 +24,10 @@ public class WhenUsingLogic
 	private MockTwoWaySerialComm _mockOutputComm;
 	private MockClock _mockClock;
 	private ILogic _sut;
-	private Main _main;
-	private BCrypt _bCrypt;
-	private TwoWayCommFactory _serialFactory;
-	private TwoWaySerialComm _serialComm;
+//	private Main _main;
+//	private BCrypt _bCrypt;
+//	private TwoWayCommFactory _serialFactory;
+//	private TwoWaySerialComm _serialComm;
 
 
 

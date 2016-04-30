@@ -108,37 +108,6 @@ public class NFCRepository implements INFCRepository{
 		}
 	}
 	
-	/*
-	 * This method calls a SP on the database which inputs 3 parameters into User
-	 * (username, lastname, hashed UID key)
-	 * 
-	 * Void : inserts a row into database table
-	 */
-	@Override
-	public void createNewUser(String username, String lastname, String hashedKey) throws Exception 
-	{
-		HashMap<String, DBParam> params = new HashMap<>();
-		params.put("username" , new DBParam(String.valueOf(username), JDBCType.NVARCHAR));
-		params.put("lastname" , new DBParam(String.valueOf(lastname), JDBCType.NVARCHAR));
-		params.put("hashkey" , new DBParam(String.valueOf(hashedKey), JDBCType.NVARCHAR));
-		IUnitOfWork uow = null;
-		
-		try
-		{
-			uow = _dbFactory.CreateUnitOfWork();	
-			uow.RunStoredProcedure("sp_NFC_insertUser", params);
-		} 
-		catch(ClassNotFoundException ex)
-		{
-			throw new Exception("Unable to query database log", ex);
-		}	
-		finally
-		{
-			if(uow != null)uow.Done();
-		}
-		
-		
-	}
 	
 	/*
 	 * Logic.getUserFromID
@@ -146,21 +115,19 @@ public class NFCRepository implements INFCRepository{
 	 * 
 	 */
 	@Override
-	public void createNewUserRole(User u, int roleID) throws Exception 
+	public void createNewUserRole(int userID, int roleID) throws Exception 
 	{
-		int userID = u.get_userID();
-		
 		HashMap<String, DBParam> params = new HashMap<>();
-		params.put("userID" , new DBParam(String.valueOf(userID), JDBCType.INTEGER));
 		params.put("roleID" , new DBParam(String.valueOf(roleID), JDBCType.INTEGER));
+		params.put("userID" , new DBParam(String.valueOf(userID), JDBCType.INTEGER));
 		IUnitOfWork uow = null;
 		
 		try
 		{
 			uow = _dbFactory.CreateUnitOfWork();	
-			uow.RunStoredProcedure("sp_NFC_insertUserRole", params);
+			uow.RunStoredProcedure("sp_NFC_insertUsersRole", params);
 		} 
-		catch(ClassNotFoundException ex)
+		catch(Exception ex)
 		{
 			throw new Exception("Unable to query database log", ex);
 		}	
@@ -244,26 +211,30 @@ public class NFCRepository implements INFCRepository{
 			if(uow != null)uow.Done();
 		}
 	}
-	
-	
 
 
-	//	public boolean addNewUserToSystem(String username, String password, String key, int role) throws ClassNotFoundException, SQLException
-	//	{
-	//		PreparedStatement ps = null;
-	//		Connection conn = DriverManager.getConnection("jdbc:mysql://51.255.42.59:3306/NFC" , "jroot"  , "javapassword");
-	//		String updateQuery = "INSERT INTO USERS(_username, _password, _key, _roleID) VALUES (?,?,?,?)";
-	//		ps = (PreparedStatement) conn.prepareStatement(updateQuery);
-	//		ps.setString(1, username);
-	//		ps.setString(2, password);
-	//		ps.setString(3, key);
-	//		ps.setInt(4, role);
-	//		
-	//		ps.execute();
-	//			
-	//		System.out.println("You have been added to the db by method - NFCREPO.addNewUserToSystem.");
-	//		return true;
-	//
-	//	}
+
+	@Override
+	public void createNewUser(String username, String lastname, String hashedKey) throws Exception 
+	{
+		IUnitOfWork uow = null;
+		
+		try
+		{
+			uow = _dbFactory.CreateUnitOfWork();	
+			uow.RunStringStoredProcedure(username,lastname,hashedKey);
+		} 
+		catch(ClassNotFoundException ex)
+		{
+			throw new Exception("Unable to query database log (initiation)", ex);
+		}	
+		finally
+		{
+			if(uow != null)uow.Done();
+		}
+		
+	}
+	
+	
 	
 }	

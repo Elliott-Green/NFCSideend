@@ -10,7 +10,7 @@ public class UnitOfWork implements IUnitOfWork {
 
 	private final Connection _conn;
 
-	
+
 	public UnitOfWork(Connection conn)
 	{
 		_conn = conn;
@@ -44,7 +44,7 @@ public class UnitOfWork implements IUnitOfWork {
 			throw ex;
 		}
 	}
-	
+
 	/*
 	 * A better way to deal with queries that are state changing (insert,update,delete)
 	 * This method calls a SP on the database with the relevant types being changed into their SQL type counterpart.
@@ -70,13 +70,15 @@ public class UnitOfWork implements IUnitOfWork {
 				if(i < paramSize - 1)
 				{
 					sb.append(",");
+
 				}
 
 			}
 			sb.append(")}");
+
 			String call = sb.toString();
 			PreparedStatement cs = _conn.prepareStatement(call);
-			
+
 			System.out.println("you called : " + call);
 
 			int index = 1;
@@ -97,7 +99,8 @@ public class UnitOfWork implements IUnitOfWork {
 					cs.setInt(index, Integer.parseInt(param.getValue()));
 					break;
 				case NVARCHAR:
-					cs.setString(1,param.toString());
+					cs.setString(index, param.getValue());
+					System.out.println("index: " + index + "\n Val: " + param.getValue());
 					break;
 				case TIME:
 					//toDO
@@ -110,11 +113,8 @@ public class UnitOfWork implements IUnitOfWork {
 			}
 
 			System.out.println("This is the SPROC call :" + sprocName);
-			
-			for(DBParam param : params.values())
-			{
-				System.out.println(param.getValue()+"  "+param.getValue().length());
-			}
+			System.out.println(call.toString());
+
 
 
 
@@ -123,6 +123,7 @@ public class UnitOfWork implements IUnitOfWork {
 		catch(Exception e)
 		{
 			e.getMessage();
+			e.printStackTrace();
 		}
 		finally
 		{
@@ -130,6 +131,29 @@ public class UnitOfWork implements IUnitOfWork {
 		}
 
 	}
+		
+		/*
+		 * stupid
+		 */
+		public void RunStringStoredProcedure(String username, String lastname, String hashedKey)
+		{
+			String call = "{CALL sp_NFC_insertUser('"+  username + "' , '" + lastname + "','" + hashedKey +"')}";
+			System.out.println("you called : " + call);
+			PreparedStatement cs;
+			
+			try 
+			{
+				cs = _conn.prepareStatement(call);
+				cs.execute(); 
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
 
 	/*
 	 * VPS doesn't close connections by default, this method closes the current connection.
