@@ -18,6 +18,9 @@ import database.repository.INFCRepository;
 import database.types.User;
 import database.types.UserDoorAccess;
 
+/*
+ * This is the main class compromised of the communication classes and the other functionality classes. This is called once in main, if called
+ */
 public class Logic implements ILogic {
 
 	private final INFCRepository _repo;
@@ -36,16 +39,19 @@ public class Logic implements ILogic {
 		_clock = clock;
 	}
 
-
+	/*
+	 * This is the main method called from Main.main to deal with door logic.
+	 * 
+	 * Input : door ID , key length
+	 * void : Write LED result based on logic from queries.
+	 */
 	@Override
 	public void monitorDoor(int doorID, int keyLength) 
 	{		
 		String key = _inputComm.read(keyLength);
-
 		try 
 		{
 			User u = getUserFromKey(key);
-			//if not a valid user, write to serial
 			if(u != null) 
 			{				
 				if(userCanAccessDoor(u.get_userID(), doorID))
@@ -57,7 +63,8 @@ public class Logic implements ILogic {
 					writeDoorResult(DoorResult.NoAccess);
 				}
 			}
-			else{			
+			else
+			{			
 			writeDoorResult(DoorResult.InvalidUser);
 			}			
 		} 
@@ -67,6 +74,12 @@ public class Logic implements ILogic {
 		}
 	}	
 	
+	/*
+	 * This is the initiation points entry method. This method takes the input from the user and tries to call the insert statements.
+	 * 
+	 * Input : the key length to read (usually 8 for NFCa)
+	 * Void : attempts to add user to the system / possible throws exceptions
+	 */
 	@Override
 	public void monitorDoorInitiation(int keyLength) throws Exception 
 	{		
@@ -80,11 +93,19 @@ public class Logic implements ILogic {
 		System.out.println("Enter your role ID 1-7");
 		int roleID = in.nextInt();
 		System.out.println();
+		in.close();
 		
 		addUserToSystem(firstname, lastname, UID, roleID);
 
 	}	
 
+	/*
+	 * This method determines the permission a user has on a door by calling getUserDoorAccess which calls the Union SQL query to return the permissions
+	 * Also this method uses the RXTX communication to send a byte to the arduino to signal the LED's.
+	 * Input : User, obtained from scanning input
+	 * Output : boolean if user can access door
+	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean userCanAccessDoor(int userID, int doorID) throws Exception
 	{
@@ -98,15 +119,14 @@ public class Logic implements ILogic {
 		for(UserDoorAccess a : access)
 		{
 			final UserDoorAccess uda = a;
-
-			
-			//office permissions without time
+	
+			//office permissions without time.
 			if(uda.get_doorID() == doorID && uda.get_userID() == userID)
 			{
 				_repo.logUserAccess(userID, doorID);
 				return true;
 			}
-			//door permissions with time
+			//door permissions with time.
 			if(uda.get_startTime().getHours() == 0 && uda.get_startTime().getMinutes() == 0 && uda.get_endTime().getHours() == 0 && uda.get_endTime().getMinutes() == 0 || uda.get_startTime().getTime() <= now && uda.get_endTime().getTime() >= now)
 			{		
 				_repo.logUserAccess(userID, doorID);
@@ -118,7 +138,11 @@ public class Logic implements ILogic {
 		return false;
 	}
 
-	//horrible if lots of user table rows
+	/*
+	 * This method uses a predicate to test the keys obtained from getAllUsersand a parallel stream to speed up the time to calculate.
+	 * Input : hashed UID.
+	 * Output : user of UID.
+	 */
 	@Override
 	public User getUserFromKey(String hashedKey) throws Exception
 	{
@@ -142,6 +166,12 @@ public class Logic implements ILogic {
 	}
 
 
+	/*
+	 * This method is called from the initiation point.
+	 * 
+	 * Input : user variables and role ID.
+	 * Output : new User object (so we can call getUserFromKey on newly created user to get UserID which then is used to update the UserRole table).
+	 */
 	@Override
 	public User addUserToSystem(String username, String lastname, String UID, int roleID) throws Exception 
 	{
@@ -171,9 +201,13 @@ public class Logic implements ILogic {
 		}
 	}
 	
-
-
-
+	/*
+	 * This method is also called with the initiation point to add a users role. 
+	 * It does a basic check on door permissions to check if the permissions were added.
+	 * 
+	 * Input : userID,  roleID.
+	 * Void : adds user role to system.
+	 */
 	@Override
 	public void addUserRoleToSystem(int userID, int roleID) throws Exception 
 	{

@@ -40,16 +40,17 @@ public class MockNFCRepository implements INFCRepository {
 		
 	}
 
-	@Override
-	public void createNewUserRole(User u, int roleID) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public User getUserFromHash(String hashedKey) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void createNewUserRole(int userID, int roleID) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

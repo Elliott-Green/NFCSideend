@@ -13,8 +13,7 @@ import database.types.UserDoorAccess;
 
 /*
  * This class is created in Main.main and its constructor takes the parameters needed for creating a connection, and passes it to the new DBFactory object.
- * The object can then be used to make relevant queries which would be returned by this class. 
- * Effectively making queries calls on the iow (Connection) is considered best OO practice.
+ * The object can then be used to make relevant queries which would be returned by this class. Effectively making queries calls on the iow (Connection) is considered best OO practice.
  */
 public class NFCRepository implements INFCRepository{
 
@@ -28,7 +27,7 @@ public class NFCRepository implements INFCRepository{
 
 
 	/*
-	 * A simple SELECT * method.
+	 * A SELECT * method from the database. Used within the Parallel Stream test to test if a users hash can be matched on any user on the database.
 	 * 
 	 * Output: an ArrayList of type user with all the users on the database.
 	 */
@@ -54,9 +53,10 @@ public class NFCRepository implements INFCRepository{
 	}
 	
 	/*
-	 * Get hash, where hash is like hash
+	 * This method is used within Logic to determine if a users hash can be dehashed to a value on the database.
 	 * 
-	 * Output: the User
+	 * Input : hashed UID
+	 * Output: User object
 	 */
 	@Override
 	public User getUserFromHash(String hashedKey) throws Exception 
@@ -108,10 +108,40 @@ public class NFCRepository implements INFCRepository{
 		}
 	}
 	
+	/*
+	 * This method adds a new user using the system. It gets called in Logic.addUserToSystem and gets called with the method below
+	 * 
+	 * Input : user variables and hashed UID
+	 * Void : adds new user
+	 * 
+	 */
+	
+	@Override
+	public void createNewUser(String username, String lastname, String hashedKey) throws Exception 
+	{
+		IUnitOfWork uow = null;
+		
+		try
+		{
+			uow = _dbFactory.CreateUnitOfWork();	
+			uow.runAddUserStoredProcedure(username,lastname,hashedKey);
+		} 
+		catch(ClassNotFoundException ex)
+		{
+			throw new Exception("Unable to query database log (initiation)", ex);
+		}	
+		finally
+		{
+			if(uow != null)uow.Done();
+		}
+		
+	}
 	
 	/*
-	 * Logic.getUserFromID
+	 * This below creates a new users role, based on the user just created by the method above.
+	 * This method needs to be called in order to give permissions to a user.
 	 * 
+	 * Input : userID from just newly created user, and their role ID.
 	 * 
 	 */
 	@Override
@@ -211,30 +241,4 @@ public class NFCRepository implements INFCRepository{
 			if(uow != null)uow.Done();
 		}
 	}
-
-
-
-	@Override
-	public void createNewUser(String username, String lastname, String hashedKey) throws Exception 
-	{
-		IUnitOfWork uow = null;
-		
-		try
-		{
-			uow = _dbFactory.CreateUnitOfWork();	
-			uow.RunStringStoredProcedure(username,lastname,hashedKey);
-		} 
-		catch(ClassNotFoundException ex)
-		{
-			throw new Exception("Unable to query database log (initiation)", ex);
-		}	
-		finally
-		{
-			if(uow != null)uow.Done();
-		}
-		
-	}
-	
-	
-	
 }	

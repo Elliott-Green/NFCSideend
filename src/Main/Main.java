@@ -1,8 +1,5 @@
 package main;
 
-
-import org.mindrot.jbcrypt.BCrypt;
-
 import Security.Encryption;
 import Security.IEncryption;
 import arduino.ITwoWaySerialComm;
@@ -10,13 +7,18 @@ import arduino.TwoWayCommFactory;
 import arduino.TwoWaySerialComm;
 import database.repository.INFCRepository;
 import database.repository.NFCRepository;
-import database.types.User;
 
+/*
+ * This class can be subject to:
+ * System not reading card lengths fully. -> (reset the system)
+ * When resetting the system, make sure the terminal window has been properly closed. This can cause the connection to hang. (reset the system / close java.exe)
+ * This system will require two Arduinos running the code provided on GitHub, and videos of the system can also be found there.
+ * The MySQL code and SP's will also be available on GitHub, as well as the Arduinos .h / .cpp files provided by the linksprite NFC shield
+ */
 public class Main 
 {
-	//Hard coded doorID value
-	final static int doorID = 1;
-	//Hard coded keyLength (current project uses 8 chars of UID)
+	//System constant variables
+	final static int doorID = 24;
 	final static int keyLength = 8;
 
 	public static void main(String[] args) throws Exception 
@@ -34,17 +36,20 @@ public class Main
 		final ILogic logic = new Logic(repo, encryption,inputComm,outputComm,realTime);
 
 
-
-		//Monitor a given door forever
+		//Door system.
+		//Monitor a given door forever.
 		while(true)
 		{
 			logic.monitorDoor(doorID, keyLength);
 			Thread.sleep(500);
 		}	
-
+		
+		//Initiation System
+		//Monitor no door, add new users to the system.
 //		while(true)
 //		{
 //			logic.monitorDoorInitiation(keyLength);
+//			Thread.sleep(500);
 //		}
 
 

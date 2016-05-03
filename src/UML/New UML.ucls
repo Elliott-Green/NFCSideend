@@ -3,79 +3,79 @@
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="database.access.UnitOfWork" project="NFCSideend" 
     file="/NFCSideend/src/database/access/UnitOfWork.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="206" y="325"/>    
+    <position height="-1" width="-1" x="3807" y="97"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="2" language="java" name="database.access.IUnitOfWork" project="NFCSideend" 
-    file="/NFCSideend/src/database/access/IUnitOfWork.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="206" y="518"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="3" language="java" name="database.access.DBFactory" project="NFCSideend" 
-    file="/NFCSideend/src/database/access/DBFactory.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="506" y="317"/>    
+  <class id="2" language="java" name="arduino.InvalidPortTypeException" project="NFCSideend" 
+    file="/NFCSideend/src/arduino/InvalidPortTypeException.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3555" y="925"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="database.access.DBParam" project="NFCSideend" 
-    file="/NFCSideend/src/database/access/DBParam.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="715" y="316"/>    
+  <enumeration id="3" language="java" name="arduino.DoorResult" project="NFCSideend" 
+    file="/NFCSideend/src/arduino/DoorResult.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3747" y="961"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
-  </class>  
-  <interface id="5" language="java" name="database.repository.INFCRepository" project="NFCSideend" 
-    file="/NFCSideend/src/database/repository/INFCRepository.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="870" y="125"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="6" language="java" name="database.repository.NFCRepository" project="NFCSideend" 
-    file="/NFCSideend/src/database/repository/NFCRepository.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="507" y="124"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="7" language="java" name="arduino.TwoWaySerialComm" project="NFCSideend" 
-    file="/NFCSideend/src/arduino/TwoWaySerialComm.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1547" y="557"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="8" language="java" name="arduino.TwoWayCommFactory" project="NFCSideend" 
+  </enumeration>  
+  <class id="4" language="java" name="arduino.TwoWayCommFactory" project="NFCSideend" 
     file="/NFCSideend/src/arduino/TwoWayCommFactory.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="172" x="1702" y="491"/>    
+    <position height="-1" width="-1" x="3942" y="925"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="9" language="java" name="arduino.ITwoWaySerialComm" project="NFCSideend" 
-    file="/NFCSideend/src/arduino/ITwoWaySerialComm.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1550" y="719"/>    
+  <class id="5" language="java" name="database.access.DBParam" project="NFCSideend" 
+    file="/NFCSideend/src/database/access/DBParam.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2820" y="742"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="6" language="java" name="main.ILogic" project="NFCSideend" file="/NFCSideend/src/main/ILogic.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3319" y="219"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="7" language="java" name="main.Logic" project="NFCSideend" file="/NFCSideend/src/main/Logic.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3320" y="542"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="8" language="java" name="Security.IEncryption" project="NFCSideend" 
+    file="/NFCSideend/src/Security/IEncryption.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3838" y="751"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="9" language="java" name="database.repository.INFCRepository" project="NFCSideend" 
+    file="/NFCSideend/src/database/repository/INFCRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3872" y="541"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -84,179 +84,211 @@
   </interface>  
   <class id="10" language="java" name="database.types.User" project="NFCSideend" 
     file="/NFCSideend/src/database/types/User.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1128" y="180"/>    
+    <position height="-1" width="-1" x="3128" y="986"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="database.types.UsersRole" project="NFCSideend" 
-    file="/NFCSideend/src/database/types/UsersRole.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1303" y="144"/>    
+  <class id="11" language="java" name="arduino.TwoWaySerialComm" project="NFCSideend" 
+    file="/NFCSideend/src/arduino/TwoWaySerialComm.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2966" y="91"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="database.types.Door" project="NFCSideend" 
-    file="/NFCSideend/src/database/types/Door.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1465" y="162"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="13" language="java" name="database.types.Mapping" project="NFCSideend" 
-    file="/NFCSideend/src/database/types/Mapping.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1737" y="162"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="14" language="java" name="database.types.UserDoorAccess" project="NFCSideend" 
-    file="/NFCSideend/src/database/types/UserDoorAccess.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="2037" y="180"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="15" language="java" name="main.Main" project="NFCSideend" file="/NFCSideend/src/main/Main.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="957" y="524"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="16" language="java" name="main.Clock" project="NFCSideend" file="/NFCSideend/src/main/Clock.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1074" y="507"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="17" language="java" name="main.Logic" project="NFCSideend" file="/NFCSideend/src/main/Logic.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="871" y="684"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="18" language="java" name="org.mindrot.jbcrypt.BCrypt" project="NFCSideend" 
-    file="/NFCSideend/src/org/mindrot/jbcrypt/BCrypt.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="517" y="673"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="19" language="java" name="Security.Encryption" project="NFCSideend" 
+  <class id="12" language="java" name="Security.Encryption" project="NFCSideend" 
     file="/NFCSideend/src/Security/Encryption.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1812" y="708"/>    
+    <position height="-1" width="-1" x="4192" y="750"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="20" language="java" name="Security.IEncryption" project="NFCSideend" 
-    file="/NFCSideend/src/Security/IEncryption.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1812" y="856"/>    
+  <class id="13" language="java" name="main.Main" project="NFCSideend" file="/NFCSideend/src/main/Main.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2995" y="732"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="org.mindrot.jbcrypt.BCrypt" project="NFCSideend" 
+    file="/NFCSideend/src/org/mindrot/jbcrypt/BCrypt.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2740" y="383"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="15" language="java" name="database.access.IUnitOfWork" project="NFCSideend" 
+    file="/NFCSideend/src/database/access/IUnitOfWork.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3806" y="313"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <association id="21">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="22" name="_inputComm">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="23" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="24">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="25" name="_outputComm">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="26" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="27">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="28" name="_dbFactory">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="29" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="30">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="2"/>  
-  </realization>  
-  <realization id="31">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="20"/>  
-  </realization>  
-  <realization id="32">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="9"/>  
-  </realization>  
-  <association id="33">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="34" name="_encryption">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="35" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+  <interface id="16" language="java" name="arduino.ITwoWaySerialComm" project="NFCSideend" 
+    file="/NFCSideend/src/arduino/ITwoWaySerialComm.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2965" y="362"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="17" language="java" name="database.access.DBFactory" project="NFCSideend" 
+    file="/NFCSideend/src/database/access/DBFactory.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="4185" y="547"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="database.repository.NFCRepository" project="NFCSideend" 
+    file="/NFCSideend/src/database/repository/NFCRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="302" x="4035" y="-11"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="database.types.UsersRole" project="NFCSideend" 
+    file="/NFCSideend/src/database/types/UsersRole.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2964" y="953"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="20" language="java" name="main.IClock" project="NFCSideend" file="/NFCSideend/src/main/IClock.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3537" y="247"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="21" language="java" name="main.Clock" project="NFCSideend" file="/NFCSideend/src/main/Clock.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3539" y="75"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="database.types.Door" project="NFCSideend" 
+    file="/NFCSideend/src/database/types/Door.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="2806" y="973"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="database.types.Mapping" project="NFCSideend" 
+    file="/NFCSideend/src/database/types/Mapping.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3257" y="762"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" name="database.types.UserDoorAccess" project="NFCSideend" 
+    file="/NFCSideend/src/database/types/UserDoorAccess.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="3323" y="983"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="25">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="26" name="_clock"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="20" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="36">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="37" name="_repo">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="38" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+  <realization id="28">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="16"/>  
+  </realization>  
+  <association id="29">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="30" name="_inputComm"/>      
+      <multiplicity id="31" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="16" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="39">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="5"/>  
+  <association id="32">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="33" name="_dbFactory"/>      
+      <multiplicity id="34" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="35">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="36" name="_outputComm"/>      
+      <multiplicity id="37" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="38">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="8"/>  
   </realization>  
+  <association id="39">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="40" name="_encryption"/>      
+      <multiplicity id="41" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="42">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="15"/>  
+  </realization>  
+  <realization id="43">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <realization id="44">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <realization id="45">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <association id="46">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="47" name="_repo"/>      
+      <multiplicity id="48" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

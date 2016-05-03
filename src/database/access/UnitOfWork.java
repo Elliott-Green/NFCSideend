@@ -17,7 +17,7 @@ public class UnitOfWork implements IUnitOfWork {
 	}
 
 	/*
-	 * Very bad to handle raw SQL strings, within a closed enviroment I allow this practice.
+	 * Very bad to handle raw SQL strings, within a closed environment I allow this practice.
 	 * 
 	 * Input : @String of SQL to be sent to database.
 	 * Output : A ResultSet of that query.
@@ -133,9 +133,13 @@ public class UnitOfWork implements IUnitOfWork {
 	}
 		
 		/*
-		 * stupid
+		 * String MySQL variables need to be wrapped in ''. 
+		 * Couldn't think of a better way to write this. 
+		 * 
+		 * Input : User database table variables.
+		 * Void : runs the stored procedure with the variables obtained from the initiation method in Logic
 		 */
-		public void RunStringStoredProcedure(String username, String lastname, String hashedKey)
+		public void runAddUserStoredProcedure(String username, String lastname, String hashedKey)
 		{
 			String call = "{CALL sp_NFC_insertUser('"+  username + "' , '" + lastname + "','" + hashedKey +"')}";
 			System.out.println("you called : " + call);
@@ -153,7 +157,6 @@ public class UnitOfWork implements IUnitOfWork {
 			
 			
 		}
-		
 
 	/*
 	 * VPS doesn't close connections by default, this method closes the current connection.
