@@ -1,5 +1,7 @@
 package main;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import Security.Encryption;
 import Security.IEncryption;
 import arduino.ITwoWaySerialComm;
@@ -18,7 +20,7 @@ import database.repository.NFCRepository;
 public class Main 
 {
 	//System constant variables
-	final static int doorID = 24;
+	final static int doorID = 1;
 	final static int keyLength = 8;
 
 	public static void main(String[] args) throws Exception 
@@ -38,20 +40,21 @@ public class Main
 
 		//Door system.
 		//Monitor a given door forever.
-		while(true)
-		{
-			logic.monitorDoor(doorID, keyLength);
-			Thread.sleep(500);
-		}	
+//		while(true)
+//		{
+//			logic.monitorDoor(doorID, keyLength);
+//			Thread.sleep(500);
+//		}	
 		
 		//Initiation System
 		//Monitor no door, add new users to the system.
-//		while(true)
-//		{
-//			logic.monitorDoorInitiation(keyLength);
-//			Thread.sleep(500);
-//		}
+		while(true)
+		{
+			logic.monitorDoorInitiation(keyLength);
+			Thread.sleep(500);
+		}
 
+		
 
 	}
 }
